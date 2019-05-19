@@ -68,7 +68,6 @@ public class LevelState extends GameState implements ActionListener {
 	public void update() {
 		tileMap.update();
 		player.update();
-
 		for(int i = 0; i < player.bullets.size(); i++) {
 			boolean remove = player.bullets.get(i).update();
 			if(remove) {
