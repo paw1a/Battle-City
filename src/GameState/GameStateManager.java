@@ -28,7 +28,7 @@ public class GameStateManager {
 		
 		gameStates = new GameState[NUMGAMESTATES];
 		
-		currentState = LEVEL1STATE;
+		currentState = MENUSTATE;
 		loadState(currentState);
 		
 	}
@@ -38,8 +38,6 @@ public class GameStateManager {
 			gameStates[state] = new MenuState(this);
 		if(state == LEVEL1STATE)
 			gameStates[state] = new LevelState(this);
-		if(state == SELECTLEVEL)
-			gameStates[state] = new SelectLevel(this);
 		if(state == CAREERSTATE)
 			gameStates[state] = new CareerState(this);
 	}

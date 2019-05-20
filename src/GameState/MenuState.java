@@ -86,7 +86,7 @@ public class MenuState extends GameState {
 		g.drawImage(plus, 400*2, 60*2, 15*2, 16*2, null);
 		g.drawString("I - 30000", 155*2, 40*2);
 		g.drawString("HI - 300000", 270*2, 40*2);
-		g.drawString("������", 580*2, 390*2);
+		g.drawString("Settings", 580*2, 390*2);
 		g.setColor(Color.GRAY.brighter());
 		g.fillOval(185*2, 258*2, 82*2, 82*2);
 		g.setColor(Color.GREEN.darker());
@@ -97,7 +97,7 @@ public class MenuState extends GameState {
 		g.fillRect((GamePanel.WIDTH - 100)*2, 1*2, 99*2, 10*2);
 		g.setFont(new Font("Arial", Font.BOLD, 10*2));
 		g.setColor(Color.WHITE);
-		g.drawString("149043/150000  ������� 15", 280*2, 9*2);
+		g.drawString("149043/150000 Level 15", 280*2, 9*2);
 		
 //		for(int i = 0; i < 10; i++) {
 //			g.draw(opRect[i]);

@@ -202,6 +202,10 @@ public class LevelState extends GameState implements ActionListener {
 				}
 			}
 		}
+		if(id == 19) {
+			System.out.println("Player win");
+			gsm.setState(GameStateManager.MENUSTATE);
+		}
 	}
 
 	@Override
