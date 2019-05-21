@@ -6,14 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0c30c10-00ab-48d9-afdb-e66e5fb82771" name="Default" comment="error correction">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Tanks_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Tanks_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/GameState/GameStateManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GameState/GameStateManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/artifacts/Tanks_jar/Tanks.jar" beforeDir="false" afterPath="$PROJECT_DIR$/classes/artifacts/Tanks_jar/Tanks.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameState/GameStateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameState/GameStateManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" />
-    </list>
+    <list default="true" id="e0c30c10-00ab-48d9-afdb-e66e5fb82771" name="Default" comment="add .jar file" />
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,7 +23,7 @@
         <entry file="file://$PROJECT_DIR$/src/GameState/GameStateManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1235">
-              <caret line="27" column="8" lean-forward="true" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+              <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -167,7 +160,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
     <option name="width" value="1940" />
@@ -307,6 +300,14 @@
       <option name="presentableId" value="Default" />
       <updated>1554136502496</updated>
     </task>
+    <task id="LOCAL-00001" summary="add .jar file">
+      <created>1558466273775</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1558466273775</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -322,7 +323,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.25070822" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.25070822" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -344,7 +345,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="error correction" />
-    <option name="LAST_COMMIT_MESSAGE" value="error correction" />
+    <MESSAGE value="add .jar file" />
+    <option name="LAST_COMMIT_MESSAGE" value="add .jar file" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_101/src.zip!/java/awt/image/BufferedImage.java">
@@ -551,7 +553,7 @@
     <entry file="file://$PROJECT_DIR$/src/GameState/GameStateManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1235">
-          <caret line="27" column="8" lean-forward="true" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
         </state>
       </provider>
     </entry>
