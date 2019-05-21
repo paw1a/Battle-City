@@ -44,9 +44,8 @@ public class LevelState extends GameState implements ActionListener {
 	
 	public void init() {
 		enemies = new ArrayList<>();
-		tileMap = new TileMap("/Levels/Level_1", 16);
+		tileMap = new TileMap("/Levels/Level_8", 16);
 		tileMap.loadTiles("/Images/tileset2.png");
-		hud = new HUD(enemies, player);
 
 		spawnSprite = new Sprite("/Images/image.png");
 		spawnSprite.loadImages(16, 6, 4, 1, 16, 0, 0);
@@ -62,6 +61,7 @@ public class LevelState extends GameState implements ActionListener {
 					(i % 3)+1, tileMap, player, i == 3 || i == 10 || i == 17));
 		}
 		id = 0;
+		hud = new HUD(enemies, player);
 	}
 
 	@Override
@@ -202,7 +202,7 @@ public class LevelState extends GameState implements ActionListener {
 				}
 			}
 		}
-		if(id == 19) {
+		if(id == 20 && enemies.isEmpty()) {
 			System.out.println("Player win");
 			gsm.setState(GameStateManager.MENUSTATE);
 		}

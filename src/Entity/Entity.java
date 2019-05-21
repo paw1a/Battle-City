@@ -64,4 +64,6 @@ public class Entity {
         this.y = y;
     }
 
+    public int getLives() { return lives; }
+
 }

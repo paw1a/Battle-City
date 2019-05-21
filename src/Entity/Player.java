@@ -25,7 +25,7 @@ public class Player extends Entity {
 		dx = 0;
 		dy = 0;
 		speed = 6;
-		lives = 3;
+		lives = 2;
 		level = 1;
 		if(level == 1) fastBullet = false;
 		else fastBullet = true;

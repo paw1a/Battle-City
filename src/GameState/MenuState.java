@@ -20,7 +20,7 @@ public class MenuState extends GameState {
 	private int tanky;
 	private Color titleColor;
 	private Color fonColor;
-	private Font titleFont;	
+	private Font titleFont;
 	private Font font;
 	
 	private BufferedImage titleImage;

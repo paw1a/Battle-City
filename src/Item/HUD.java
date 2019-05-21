@@ -17,6 +17,7 @@ public class HUD {
     private BufferedImage pauseImage;
     private BufferedImage angar;
     private BufferedImage playerLives;
+    private BufferedImage flag;
 
     private ArrayList<Enemy> enemies;
     private Player player;
@@ -33,9 +34,10 @@ public class HUD {
             pauseImage = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/pause2.png"));
             angar = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/angar.png"));
             playerLives = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/playerLives.png"));
+            flag = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/flag.png"));
 
             InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("joystix.ttf");
-            font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(24f);
+            font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(36f);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FontFormatException e) {
@@ -55,7 +57,8 @@ public class HUD {
         for (int i = 0; i < 20 - enemyID; i++) {
             g.drawImage(angar, 1175+(i % 2)*32, 130+(i / 2)*32, 32, 32, null);
         }
-
+        g.drawImage(flag, 1175, 630, 64, 64, null);
+        g.drawString(player.getLives()+"", 1195, 725);
     }
 
 }
