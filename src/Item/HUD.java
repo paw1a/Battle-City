@@ -2,17 +2,15 @@ package Item;
 
 import Entity.Enemy;
 import Entity.Player;
-import Util.Sprite;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class HUD {
+public class  HUD {
 
     private BufferedImage pauseImage;
     private BufferedImage angar;
@@ -24,11 +22,13 @@ public class HUD {
     private Font font;
 
     private int enemyID;
+    private int level;
 
 
-    public HUD(ArrayList<Enemy> enemies, Player player) {
+    public HUD(ArrayList<Enemy> enemies, Player player, int level) {
         this.enemies = enemies;
         this.player = player;
+        this.level = level;
 
         try {
             pauseImage = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/pause2.png"));
@@ -58,7 +58,10 @@ public class HUD {
             g.drawImage(angar, 1175+(i % 2)*32, 130+(i / 2)*32, 32, 32, null);
         }
         g.drawImage(flag, 1175, 630, 64, 64, null);
-        g.drawString(player.getLives()+"", 1195, 725);
+        g.drawString(level+"", 1195, 725);
+        g.drawString("IP", 1175, 530);
+        g.drawImage(playerLives, 1168, 540, 40, 40, null);
+        g.drawString(player.getLives()+"", 1213, 570);
     }
 
 }

@@ -1,13 +1,10 @@
 package GameState;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -20,16 +17,15 @@ public class MenuState extends GameState {
 	private int tanky;
 	private Color titleColor;
 	private Color fonColor;
-	private Font titleFont;
 	private Font font;
 	
 	private BufferedImage titleImage;
 	private BufferedImage settingsImage;
 	private BufferedImage tileset;
-	private BufferedImage optionImage;
 	private BufferedImage patron;
 	private BufferedImage money;
 	private BufferedImage plus;
+	private BufferedImage reward;
 	
 	private Rectangle[] opRect;
 	
@@ -39,18 +35,19 @@ public class MenuState extends GameState {
 		tanky = 183;
 		titleColor = new Color(170, 0, 70);
 		fonColor = new Color(50, 30, 50);
-		titleFont = new Font("Century Gothic",Font.PLAIN,40*2);
-		font = new Font("Arial", Font.BOLD, 20*2);
 		try {
 			titleImage = ImageIO.read(getClass().getResourceAsStream("/Images/title.png"));
 			settingsImage = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/settings.png"));
 			tileset = ImageIO.read(getClass().getResourceAsStream("/Images/image.png"));
-			optionImage = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/options.png"));
 			patron = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/patron.png"));
 			money = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/money.png"));
 			plus = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/plus.png"));
+			reward = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/reward.png"));
 			opRect = new Rectangle[10];
-		} catch (IOException e) {System.out.println("NO FILE");}
+			InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("joystix.ttf");
+			font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(36f);
+		} catch (IOException | FontFormatException e) {System.out.println("NO FILE");}
+
 		init();
 	}
 	
@@ -62,10 +59,10 @@ public class MenuState extends GameState {
 		opRect[3] = new Rectangle(600, 286*2, 180*2, 23*2);
 		opRect[4] = new Rectangle(600, 319*2, 100*2, 23*2);
 		opRect[5] = new Rectangle(1000, 320*2, 40*2, 40*2); // settings
-		opRect[6] = new Rectangle(370, 260*2, 56*3, 56*3); // oval
+		opRect[6] = new Rectangle(370, 255*2, 56*3, 56*3); // oval
 		opRect[7] = new Rectangle(500, 60*2, 15*2, 16*2); // plus
 		opRect[8] = new Rectangle(800, 60*2, 15*2, 16*2);
-		opRect[9] = new Rectangle(1160, 370*2, 100*2, 25*2); // help
+		opRect[9] = new Rectangle(1130, 370*2, 100*2, 25*2); // help
 	}
 	@Override
 	public void update() {}
@@ -75,18 +72,18 @@ public class MenuState extends GameState {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		g.setColor(Color.WHITE);
-		g.setFont(font);
+		g.setFont(font.deriveFont(36f));
 		g.drawImage(titleImage, 150*2, 100*2, 450*2, 65*2, null);
-		g.drawImage(optionImage, 300*2, 190*2, 180*2, 150*2, null);
 		g.drawImage(money, 155*2, 60*2, 15*2, 16*2, null);
+		g.drawImage(reward, 380, 350, 150, 150, null);
 		g.drawString("5000", 180*2, 75*2);
 		g.drawImage(plus, 250*2, 60*2, 15*2, 16*2, null);
 		g.drawImage(patron, 320*2, 58*2, 15*2, 20*2, null);
 		g.drawString("200", 345*2, 75*2);
 		g.drawImage(plus, 400*2, 60*2, 15*2, 16*2, null);
-		g.drawString("I - 30000", 155*2, 40*2);
-		g.drawString("HI - 300000", 270*2, 40*2);
-		g.drawString("Settings", 580*2, 390*2);
+		g.drawString("I-30000", 155*2, 40*2);
+		g.drawString("HI-300000", 285*2, 40*2);
+		g.drawString("Help", 580*2, 390*2);
 		g.setColor(Color.GRAY.brighter());
 		g.fillOval(185*2, 258*2, 82*2, 82*2);
 		g.setColor(Color.GREEN.darker());
@@ -95,20 +92,27 @@ public class MenuState extends GameState {
 		g.fillRect(1, 1, (GamePanel.WIDTH - 100)*2, 10*2);
 		g.setColor(Color.GRAY);
 		g.fillRect((GamePanel.WIDTH - 100)*2, 1*2, 99*2, 10*2);
-		g.setFont(new Font("Arial", Font.BOLD, 10*2));
 		g.setColor(Color.WHITE);
+		g.setFont(font.deriveFont(17f));
 		g.drawString("149043/150000 Level 15", 280*2, 9*2);
-		
-//		for(int i = 0; i < 10; i++) {
-//			g.draw(opRect[i]);
-//		}
+
+		//draw options
+		g.setFont(font.deriveFont(40f));
+		g.drawString("1 PLAYER", 610, 415);
+		g.drawString("2 PLAYER", 610, 480);
+		g.drawString("CAREER", 610, 540);
+		g.drawString("CONSTRUCTION", 610, 610);
+		g.drawString("ARMORY", 610, 670);
+
+		/*for(int i = 0; i < 10; i++) {
+			g.draw(opRect[i]);
+		}*/
 	}
 
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.setState(gsm.LEVEL1STATE);
-		}
-		if(currentChoice == 2) {
+			gsm.setState(gsm.LEVELSTATE);
+		} else if(currentChoice == 2 || currentChoice == 3) {
 			gsm.setState(gsm.CAREERSTATE);
 		}
 	}
@@ -147,7 +151,8 @@ public class MenuState extends GameState {
 				System.out.println("settings");
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[6])) {
-				System.out.println("oval");
+				currentChoice = 3;
+				select();
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[7])) {
 				System.out.println("plus1");

@@ -45,9 +45,9 @@ public class Tile {
 	public void update() {
 		if(removeBlock) {
 			type = 0;
+			image = null;
 		}
-		
-		if(topLeft == true && topRight == true && downRight == true && downLeft == true) image = image;
+
 		if(topLeft == false && topRight == false && downRight == false && downLeft == false) removeBlock = true;
 		
 		if(topLeft == true && topRight == false && downRight == false && downLeft == false) image = ts.getSubimage(0, 16, 16, 16);
@@ -70,9 +70,11 @@ public class Tile {
 	}
 	
 	public int getType() {return type;}
+	public void setType(int type) {this.type = type;}
 	public int getX() {return x;}
 	public int getY() {return y;}
 	public BufferedImage getImage() {return image;}
+	public boolean isEmpty() { return type == 0; }
 	public boolean isBlock() {
 		if(type == 1 || type == 2 || type == 5) {
 			blocked = true;
@@ -83,6 +85,10 @@ public class Tile {
 		}
 		return blocked;
 	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}
 	public Rectangle getRect() {
 		return new Rectangle((x-10)+2, (y)+2, (tileSize)*2-2, (tileSize)*2-2);
 	}
@@ -91,4 +97,11 @@ public class Tile {
 	}
 	public void setRemove(boolean b) { removeBlock = b; }
 	public boolean getRemove() { return removeBlock; }
+
+	public void repair() {
+		topRight = true;
+		topLeft = true;
+		downLeft = true;
+		downRight = true;
+	}
 }

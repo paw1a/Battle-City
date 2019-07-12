@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Main.GamePanel;
+import TileMap.Tile;
 import TileMap.TileMap;
 
 public class Bullet {
@@ -29,6 +30,8 @@ public class Bullet {
 	private BufferedImage bulletRight;
 	private BufferedImage bulletDown;
 	private BufferedImage bulletLeft;
+
+	private boolean powerBullet;
 	
 	public Bullet(int x, int y, int direction, boolean fastBullet, TileMap tileMap) {
 		this.x = x;
@@ -36,8 +39,9 @@ public class Bullet {
 		this.tileMap = tileMap;
 		this.direction = direction;
 
-		if(fastBullet) speed = 24;
+		if(fastBullet) speed = 27;
 		else speed = 18;
+		powerBullet = false;
 		
 		try {
 			bulletSet = ImageIO.read(getClass().getResourceAsStream("/Images/bullet.png"));
@@ -76,11 +80,10 @@ public class Bullet {
 						|| getRectRight().intersects(tileMap.tiles[i][j].getRectBul()) 
 						|| getRectDown().intersects(tileMap.tiles[i][j].getRectBul())
 						|| getRectLeft().intersects(tileMap.tiles[i][j].getRectBul())) {
+						if(powerBullet) tileMap.tiles[i][j].setRemove(true);
 						remove = true;
 					}
-				}
-				
-				if(tileMap.tiles[i][j].getType() == 2) {
+				} else if(tileMap.tiles[i][j].getType() == 2) {
 					if(direction == 1 && getRectUp().intersects(tileMap.tiles[i][j].getRectBul())) {
 						if(tileMap.tiles[i][j].downLeft == true || tileMap.tiles[i][j].downRight == true) {
 							tileMap.tiles[i][j].downLeft = false;
@@ -90,8 +93,7 @@ public class Bullet {
 							tileMap.tiles[i][j].topRight = false;
 						}
 						remove = true;
-					}
-					if(direction == 2 && getRectLeft().intersects(tileMap.tiles[i][j].getRectBul())) {
+					} else if(direction == 2 && getRectLeft().intersects(tileMap.tiles[i][j].getRectBul())) {
 						if(tileMap.tiles[i][j].topRight == true || tileMap.tiles[i][j].downRight == true) {
 							tileMap.tiles[i][j].topRight = false;
 							tileMap.tiles[i][j].downRight = false;
@@ -100,8 +102,7 @@ public class Bullet {
 							tileMap.tiles[i][j].downLeft = false;
 						}
 						remove = true;
-					}
-					if(direction == 3 && getRectDown().intersects(tileMap.tiles[i][j].getRectBul())) {
+					} else if(direction == 3 && getRectDown().intersects(tileMap.tiles[i][j].getRectBul())) {
 						if(tileMap.tiles[i][j].topLeft == true || tileMap.tiles[i][j].topRight == true) {
 							tileMap.tiles[i][j].topLeft = false;
 							tileMap.tiles[i][j].topRight = false;
@@ -110,8 +111,7 @@ public class Bullet {
 							tileMap.tiles[i][j].downRight = false;
 						}
 						remove = true;
-					}
-					if(direction == 4 && getRectRight().intersects(tileMap.tiles[i][j].getRectBul())) {
+					} else if(direction == 4 && getRectRight().intersects(tileMap.tiles[i][j].getRectBul())) {
 						if(tileMap.tiles[i][j].topLeft == true || tileMap.tiles[i][j].downLeft == true) {
 							tileMap.tiles[i][j].topLeft = false;
 							tileMap.tiles[i][j].downLeft = false;
@@ -120,6 +120,15 @@ public class Bullet {
 							tileMap.tiles[i][j].downRight = false;
 						}
 						remove = true;
+					}
+					if(powerBullet && (getRectUp().intersects(tileMap.tiles[i][j].getRectBul())
+							|| getRectRight().intersects(tileMap.tiles[i][j].getRectBul())
+							|| getRectDown().intersects(tileMap.tiles[i][j].getRectBul())
+							|| getRectLeft().intersects(tileMap.tiles[i][j].getRectBul()))) {
+						tileMap.tiles[i][j].topRight = false;
+						tileMap.tiles[i][j].downRight = false;
+						tileMap.tiles[i][j].topLeft = false;
+						tileMap.tiles[i][j].downLeft = false;
 					}
 				}
 			}
@@ -176,7 +185,8 @@ public class Bullet {
 	
 	public int getX() { return x; }
 	public int getY() { return y; }
-	
-	
-	
+
+	public void setPowerBullet(boolean powerBullet) {
+		this.powerBullet = powerBullet;
+	}
 }

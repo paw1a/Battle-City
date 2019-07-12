@@ -8,20 +8,11 @@ public class GameStateManager {
 	private GameState[] gameStates;
 	private int currentState;
 	
-	public static final int NUMGAMESTATES = 33;
-	public static final int LEVEL1STATE = 0;
-	public static final int LEVEL2STATE = 1;
-	public static final int LEVEL3STATE = 2;
-	public static final int LEVEL4STATE = 3;
-	public static final int LEVEL5STATE = 4;
-	public static final int LEVEL6STATE = 5;
-	public static final int LEVEL7STATE = 6;
-	public static final int LEVEL8STATE = 7;
-	public static final int LEVEL9STATE = 8;
-	public static final int LEVEL10STATE = 9;
-	public static final int MENUSTATE = 30;
-	public static final int SELECTLEVEL = 31;
-	public static final int CAREERSTATE = 32;
+	public static final int NUMGAMESTATES = 4;
+	public static final int LEVELSTATE = 0;
+	public static final int MENUSTATE = 1;
+	public static final int SELECTLEVEL = 2;
+	public static final int CAREERSTATE = 3;
 	
 	
 	public GameStateManager() {
@@ -36,7 +27,7 @@ public class GameStateManager {
 	private void loadState(int state) {
 		if(state == MENUSTATE)
 			gameStates[state] = new MenuState(this);
-		if(state == LEVEL1STATE)
+		if(state == LEVELSTATE)
 			gameStates[state] = new LevelState(this);
 		if(state == CAREERSTATE)
 			gameStates[state] = new CareerState(this);

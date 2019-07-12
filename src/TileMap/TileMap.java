@@ -25,6 +25,9 @@ public class TileMap {
 	private int [][] map;
 	private int mapWidth;
 	private int mapHeight;
+
+	private boolean armor;
+	private long armorTime;
 	
 	private BufferedImage tileset;
 	private BufferedImage image;
@@ -78,9 +81,7 @@ public class TileMap {
 	}
 	
 	public void loadTiles(String s) {
-		
 		try{
-			
 			tileset = ImageIO.read(getClass().getResourceAsStream(s));
 			int numTilesAcross = (tileset.getWidth() + 1) / (tileSize + 1);
 			tilesBlocks = new BufferedImage[6];
@@ -105,7 +106,6 @@ public class TileMap {
 					tiles[row][col] = new Tile(tilesBlocks[rc], rc, row, col + 10, 16);
 				}
 			}
-			
 		} catch(Exception e) {}
 		
 	}
@@ -119,33 +119,32 @@ public class TileMap {
 				tiles[i][j].update();
 			}
 		}
+
+		if(armor && (System.currentTimeMillis() - armorTime) > 10000) {
+			armor = false;
+			transform(2);
+		}
 	}
 	
 	public void draw(Graphics2D g) {
-		
 		for(int row = 0; row < mapHeight; row++) {
 			for(int col = 0; col < mapWidth; col++) {
 				int rc = map[row][col];
-				if(rc == 0) {
-					
-				}
-				if(rc == 1) {
+				if(rc == 1 && !tiles[row][col].getRemove()) {
 					g.drawImage(tilesBlocks[rc], (x + col * tileSize)*2, (row * tileSize)*2, 32, 32, null);
 				} else 
 				if(rc == 4) {
 					g.drawImage(tilesBlocks[rc], (x + col * tileSize)*2, (row * tileSize)*2, 32, 32, null);
 				} else 
 				if(rc == 5) {
-					g.drawImage(animation.getImage(), (x + col * tileSize)*2, (row * tileSize)*2, 16*2, 16*2, null);
-				}	
-				if(rc == 2) {
-					if(tiles[row][col].getRemove() == false) {
+					g.drawImage(animation.getImage(), (x + col * tileSize) * 2, (row * tileSize) * 2, 16 * 2, 16 * 2, null);
+				} else if(rc == 2) {
+					if(!tiles[row][col].getRemove()) {
 						g.drawImage(tiles[row][col].getImage(), (x + col * tileSize)*2, (row * tileSize)*2, 32, 32, null);
 					} else {
 						g.drawImage(tilesBlocks[0], (x + col * tileSize)*2, (row * tileSize)*2, 32, 32, null);
 					}
-				}
-				else {
+				} else {
 					g.setColor(new Color(255, 255, 255, 0));
 					g.fillRect((x + col * tileSize)*2, (row * tileSize)*2, 32, 32);
 				}
@@ -168,6 +167,12 @@ public class TileMap {
 			}
 		}
 		
+	}
+
+	public void armor() {
+		armor = true;
+		armorTime = System.currentTimeMillis();
+		transform(1);
 	}
 
 	public int getx() {return x;}
@@ -202,5 +207,16 @@ public class TileMap {
 	public int getHeight() {return mapHeight; }
 	public Rectangle getRectBase() {
 		return new Rectangle((12 * tileSize)*2 + 310, (24 * tileSize)*2, 32, 32);
+	}
+
+	public void transform(int type) {
+		tiles[23][11] = new Tile(tilesBlocks[type], type, 23,11+10, 16);
+		tiles[23][12] = new Tile(tilesBlocks[type], type, 23,12+10,16);
+		tiles[23][13] = new Tile(tilesBlocks[type], type, 23,13+10,16);
+		tiles[23][14] = new Tile(tilesBlocks[type], type, 23,14+10,16);
+		tiles[24][11] = new Tile(tilesBlocks[type], type, 24,11+10,16);
+		tiles[25][11] = new Tile(tilesBlocks[type], type, 25,11+10,16);
+		tiles[24][14] = new Tile(tilesBlocks[type], type, 24,14+10,16);
+		tiles[25][14] = new Tile(tilesBlocks[type], type, 25,14+10,16);
 	}
 }

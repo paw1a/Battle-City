@@ -23,6 +23,9 @@ public class Enemy extends Entity implements ActionListener {
 	public boolean dead;
 	private boolean bonus;
 
+	private boolean freeze;
+	private long freezeTime;
+
 	private int time = 0;
 	private int delay;
 	
@@ -80,6 +83,15 @@ public class Enemy extends Entity implements ActionListener {
 		} else
 		if(direction == 4) {
 			dx = speed;
+			dy = 0;
+		}
+
+		if(freeze) {
+			if(System.currentTimeMillis() - freezeTime > 5000) {
+				timer.start();
+				freeze = false;
+			}
+			dx = 0;
 			dy = 0;
 		}
 
@@ -211,6 +223,10 @@ public class Enemy extends Entity implements ActionListener {
 			time = 0;
 		}
 	}
-	
-	
+
+	public void setFreeze() {
+		this.freeze = true;
+		freezeTime = System.currentTimeMillis();
+		timer.stop();
+	}
 }

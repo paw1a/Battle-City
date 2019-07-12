@@ -5,10 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 import Main.GamePanel;
 import TileMap.TileMap;
@@ -17,6 +14,12 @@ import Util.Sprite;
 public class Player extends Entity {
 	
 	public ArrayList<Bullet> bullets;
+	private long respawnTime;
+	private Animation respawnAnimation;
+	private boolean isRespawn;
+	private long beforeRespawn;
+
+	private boolean powerBullet;
 
 	public Player(TileMap tilemap) {
 		x = 593;
@@ -47,11 +50,15 @@ public class Player extends Entity {
 		currentAnimation = animations[level-1][direction-1];
 		
 		firing = false;
-		fireDelay = 230;
 		fireTimer = System.nanoTime();
 		
 		tileMap = tilemap;	
 		bullets = new ArrayList<Bullet>();
+
+		sprite.loadImages(16, 9, 2, 1, 16, 0, 0);
+		respawnAnimation = new Animation(new BufferedImage[]{sprite.getImage(0, 0),
+				sprite.getImage(1, 0)}, -1);
+		respawn(3000);
 	}
 	
 	public void update() {
@@ -60,11 +67,28 @@ public class Player extends Entity {
 
 		currentAnimation = animations[level-1][direction-1];
 		currentAnimation.update();
+		respawnAnimation.update();
+
+		powerBullet = false;
+		if(level == 1) {
+			fireDelay = 230;
+			fastBullet = false;
+		} else if(level == 2) {
+			fireDelay = 230;
+			fastBullet = true;
+		} else if(level == 3) {
+			fireDelay = 230;
+			fastBullet = true;
+		} else {
+			fireDelay = 300;
+			fastBullet = false;
+			powerBullet = true;
+		}
 
 		if(firing) {
 			long elapsed = (System.nanoTime() - fireTimer) / 1000000;
 
-			if(elapsed > fireDelay && bullets.size() == 0) {
+			if((elapsed > fireDelay && bullets.size() == 0) || (level == 3 && elapsed > fireDelay)) {
 				if(right) {
 					bullets.add(new Bullet(x + 40, y + 24, direction, fastBullet, tileMap));
 					fireTimer = System.nanoTime();
@@ -83,6 +107,26 @@ public class Player extends Entity {
 				}
 			}
 		}
+		for (int i = 0; i < bullets.size(); i++) {
+			bullets.get(i).setPowerBullet(powerBullet);
+		}
+
+		if(System.currentTimeMillis() - beforeRespawn > respawnTime) {
+			respawnAnimation.setDelay(-1);
+			isRespawn = false;
+		}
+
+	}
+
+	public void respawn(int time) {
+		respawnTime = time;
+		beforeRespawn = System.currentTimeMillis();
+		isRespawn = true;
+		respawnAnimation.setDelay(50);
+	}
+
+	public void upgrade() {
+		if(level < 4) level++;
 	}
 
 	public void checkCollisions() {
@@ -110,6 +154,7 @@ public class Player extends Entity {
 	
 	public void draw(Graphics2D g) {
 		g.drawImage(currentAnimation.getImage(), x, y, width, height, null);
+		g.drawImage(respawnAnimation.getImage(), x-3, y+2, width, height, null);
 		g.setColor(Color.BLUE);
 	}
 	
@@ -160,4 +205,6 @@ public class Player extends Entity {
 	public Rectangle getRect() {
 		return new Rectangle(x, y, width-4, height-4);
 	}
+	public void setLevel(int level) {level++;}
+	public boolean isRespawn() {return isRespawn;}
 }

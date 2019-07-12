@@ -13,6 +13,7 @@ import javax.swing.Timer;
 import Entity.Animation;
 import Entity.Enemy;
 import Entity.Player;
+import Item.Bonus;
 import Item.Boom;
 import Item.HUD;
 import Main.GamePanel;
@@ -21,7 +22,7 @@ import Util.Sprite;
 
 public class LevelState extends GameState implements ActionListener {
 	
-	Timer timer = new Timer(5000, this);
+	Timer timer = new Timer(2500, this);
 	public ArrayList<Enemy> enemies;
 	public ArrayList<Enemy> enemyQueue;
 	private ArrayList<Boom> booms;
@@ -30,12 +31,16 @@ public class LevelState extends GameState implements ActionListener {
 	private Sprite spawnSprite;
 	private boolean toSpawn;
 
-	public Random rand = new Random();
+	private boolean enemyFreeze;
+	private long timeFreeze;
+
 	private int id;
+	private int levelID;
 
 	private Player player;
 	public TileMap tileMap;
 	private HUD hud;
+	private Bonus bonus;
 	
 	public LevelState(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -43,8 +48,9 @@ public class LevelState extends GameState implements ActionListener {
 	}
 	
 	public void init() {
+		levelID = 2;
 		enemies = new ArrayList<>();
-		tileMap = new TileMap("/Levels/Level_8", 16);
+		tileMap = new TileMap("/Levels/Level_"+levelID, 16);
 		tileMap.loadTiles("/Images/tileset2.png");
 
 		spawnSprite = new Sprite("/Images/image.png");
@@ -57,11 +63,13 @@ public class LevelState extends GameState implements ActionListener {
 
 		enemyQueue = new ArrayList<>();
 		for (int i = 0; i < 20; i++) {
+			/*enemyQueue.add(new Enemy(Integer.parseInt(tileMap.getEnemyTypes()[i]),
+					(i % 3)+1, tileMap, player, i == 3 || i == 10 || i == 17));*/
 			enemyQueue.add(new Enemy(Integer.parseInt(tileMap.getEnemyTypes()[i]),
-					(i % 3)+1, tileMap, player, i == 3 || i == 10 || i == 17));
+					(i % 3)+1, tileMap, player, true));
 		}
 		id = 0;
-		hud = new HUD(enemies, player);
+		hud = new HUD(enemies, player, levelID);
 	}
 
 	@Override
@@ -112,7 +120,13 @@ public class LevelState extends GameState implements ActionListener {
 					j--;
 				}
 				if(enemies.get(i).enemyBullets.get(j).getRectUp().intersects(player.getRect())) {
-					System.out.println("Player died");
+					if(!player.isRespawn()) {
+						player.respawn(5000);
+						player.setX(593);
+						player.setY(766);
+						player.level = 1;
+						player.lives--;
+					}
 				}
 			}
 		}
@@ -122,7 +136,10 @@ public class LevelState extends GameState implements ActionListener {
 				if(player.bullets.get(j).getRectUp().intersects(enemies.get(i).getRect())) {
 					enemies.get(i).lives--;
 					if(enemies.get(i).dead) {
-						//if(enemies.get(i).isBonus()) createBonus();
+						if(enemies.get(i).isBonus()) {
+							if(bonus != null) bonus.create();
+							else bonus = new Bonus(player, tileMap);
+						}
 						booms.add(new Boom(enemies.get(i).getX()-30, enemies.get(i).getY()-30, true));
 						enemies.remove(i);
 						if(id < 20) toSpawn = true;
@@ -146,10 +163,33 @@ public class LevelState extends GameState implements ActionListener {
 			boolean remove = booms.get(i).update();
 			if(remove) booms.remove(i);
 		}
+		if(bonus != null)
+			if(player.getRect().intersects(bonus.getRect()) && bonus.isVisible()) {
+				bonus.setCatched(true);
+				if(bonus.getType() == 1) player.respawn(10000);
+				else if(bonus.getType() == 2) {
+					for (Enemy enemy:enemies) {
+						enemy.setFreeze();
+						enemyFreeze = true;
+						timeFreeze = System.currentTimeMillis();
+					}
+				}
+				else if(bonus.getType() == 3) tileMap.armor();
+				else if(bonus.getType() == 4) player.upgrade();
+				else if(bonus.getType() == 5) {
+					for (int i = 0; i < enemies.size(); i++) {
+						booms.add(new Boom(enemies.get(i).getX()-30, enemies.get(i).getY()-30, true));
+						enemies.remove(i);
+						i--;
+						if(id < 20) toSpawn = true;
+					}
+				}
+			}
 
 		hud.update(id);
 		spawnAnimation.update();
 		spawnUpdate();
+		if(bonus != null) bonus.update();
 	}
 	
 	@Override
@@ -183,10 +223,12 @@ public class LevelState extends GameState implements ActionListener {
 
 		tileMap.drawGrass(g);
 		hud.draw(g);
+		if(bonus != null) bonus.draw(g);
 	}
 
 	public void spawnUpdate() {
-		if(toSpawn) {
+		if(enemyFreeze && System.currentTimeMillis() - timeFreeze > 5000) enemyFreeze = false;
+		if(toSpawn && !enemyFreeze) {
 			if(spawnAnimation.getDelay() == -1) spawnAnimation.setDelay(200);
 			if(spawnAnimation.hasPlayed(2)) {
 				boolean canSpawn = true;
