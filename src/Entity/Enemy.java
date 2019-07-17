@@ -147,6 +147,7 @@ public class Enemy extends Entity implements ActionListener {
 			x -= dx;
 			y -= dy;
 			setDirection(rand.nextInt(4) + 1);
+			firing = true;
 			stop = false;
 		}
 	}

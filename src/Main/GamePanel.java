@@ -4,13 +4,10 @@ import GameState.GameStateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
 	public static final int WIDTH = (416 + 150 + 160) * 2;
 	public static final int HEIGHT = 416 * 2;
@@ -41,6 +38,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		}
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 	
 	private void init() {
@@ -141,9 +139,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		return g;
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		gsm.mouseDragged(e);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		try {
+			gsm.mouseMoved(e);
+		} catch (Exception g) {}
+	}
 }

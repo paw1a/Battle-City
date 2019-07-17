@@ -1,11 +1,6 @@
 package GameState;
 
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
 
 public abstract class GameState {
 
@@ -21,4 +16,6 @@ public abstract class GameState {
 	public abstract void mouseExited(MouseEvent e);
 	public abstract void mousePressed(MouseEvent e);
 	public abstract void mouseReleased(MouseEvent e);
+	public abstract void mouseDragged(MouseEvent e);
+	public abstract void mouseMoved(MouseEvent e);
 }

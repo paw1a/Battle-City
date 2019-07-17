@@ -44,10 +44,9 @@ public class TileMap {
 	public TileMap(String s, int tileSize) {
 		this.tileSize = tileSize;
 
-		String delimiters = ",";
+		String delimiters = "";
 		try {
-			InputStream in = getClass().getResourceAsStream(s);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			BufferedReader br = new BufferedReader(new FileReader(new File(s)));
 
 			enemyTypes = new String[20];
 			enemyTypes = br.readLine().split(delimiters);

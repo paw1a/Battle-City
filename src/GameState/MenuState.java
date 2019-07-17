@@ -3,21 +3,21 @@ package GameState;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
 import Main.GamePanel;
+import Util.Progress;
 
 public class MenuState extends GameState {
 
 	private int currentChoice = 0;
-	
-	private int tanky;
-	private Color titleColor;
-	private Color fonColor;
+
 	private Font font;
+
+	private int levelLineWidth;
 	
 	private BufferedImage titleImage;
 	private BufferedImage settingsImage;
@@ -28,13 +28,13 @@ public class MenuState extends GameState {
 	private BufferedImage reward;
 	
 	private Rectangle[] opRect;
+
+	private Progress pr;
 	
 	public MenuState(GameStateManager gsm) {
 		this.gsm = gsm;
-		
-		tanky = 183;
-		titleColor = new Color(170, 0, 70);
-		fonColor = new Color(50, 30, 50);
+		pr = Progress.getInstance();
+
 		try {
 			titleImage = ImageIO.read(getClass().getResourceAsStream("/Images/title.png"));
 			settingsImage = ImageIO.read(getClass().getResourceAsStream("/Images/HUD/settings.png"));
@@ -65,7 +65,10 @@ public class MenuState extends GameState {
 		opRect[9] = new Rectangle(1130, 370*2, 100*2, 25*2); // help
 	}
 	@Override
-	public void update() {}
+	public void update() {
+		levelLineWidth = (int)((GamePanel.WIDTH / (double)Integer.parseInt(pr.get("levelScore")))
+				*(double) Integer.parseInt(pr.get("gameScore")));
+	}
 
 	@Override
 	public void draw(Graphics2D g) {
@@ -76,30 +79,30 @@ public class MenuState extends GameState {
 		g.drawImage(titleImage, 150*2, 100*2, 450*2, 65*2, null);
 		g.drawImage(money, 155*2, 60*2, 15*2, 16*2, null);
 		g.drawImage(reward, 380, 350, 150, 150, null);
-		g.drawString("5000", 180*2, 75*2);
+		g.drawString(pr.get("coins"), 180*2, 75*2);
 		g.drawImage(plus, 250*2, 60*2, 15*2, 16*2, null);
 		g.drawImage(patron, 320*2, 58*2, 15*2, 20*2, null);
-		g.drawString("200", 345*2, 75*2);
+		g.drawString(pr.get("patrons"), 345*2, 75*2);
 		g.drawImage(plus, 400*2, 60*2, 15*2, 16*2, null);
-		g.drawString("I-30000", 155*2, 40*2);
-		g.drawString("HI-300000", 285*2, 40*2);
-		g.drawString("Help", 580*2, 390*2);
+		g.drawString("I-"+pr.get("lastLevelScore"), 155*2, 40*2);
+		g.drawString("HI-"+pr.get("highScore"), 285*2, 40*2);
+		g.drawString("EXIT", 580*2, 390*2);
 		g.setColor(Color.GRAY.brighter());
 		g.fillOval(185*2, 258*2, 82*2, 82*2);
 		g.setColor(Color.GREEN.darker());
 		g.fillOval(187*2, 260*2, 78*2, 78*2);
 		g.drawImage(settingsImage, 500*2, 320*2, 40*2, 40*2, null);
-		g.fillRect(1, 1, (GamePanel.WIDTH - 100)*2, 10*2);
+		g.fillRect(1, 1, levelLineWidth, 20);
 		g.setColor(Color.GRAY);
 		g.fillRect((GamePanel.WIDTH - 100)*2, 1*2, 99*2, 10*2);
 		g.setColor(Color.WHITE);
 		g.setFont(font.deriveFont(17f));
-		g.drawString("149043/150000 Level 15", 280*2, 9*2);
+		g.drawString(pr.get("gameScore")+"/" +pr.get("levelScore") +" Level "+pr.get("gameLevel"), 280*2, 9*2);
 
 		//draw options
 		g.setFont(font.deriveFont(40f));
 		g.drawString("1 PLAYER", 610, 415);
-		g.drawString("2 PLAYER", 610, 480);
+		g.drawString("2 PLAYERS", 610, 480);
 		g.drawString("CAREER", 610, 540);
 		g.drawString("CONSTRUCTION", 610, 610);
 		g.drawString("ARMORY", 610, 670);
@@ -114,6 +117,8 @@ public class MenuState extends GameState {
 			gsm.setState(gsm.LEVELSTATE);
 		} else if(currentChoice == 2 || currentChoice == 3) {
 			gsm.setState(gsm.CAREERSTATE);
+		} else if(currentChoice == 4) {
+			gsm.setState(gsm.CONSTRUCTIONSTATE);
 		}
 	}
 	
@@ -142,7 +147,8 @@ public class MenuState extends GameState {
 				select();
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[3])) {
-				System.out.println("construction");
+				currentChoice = 4;
+				select();
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[4])) {
 				System.out.println("armory");
@@ -156,12 +162,17 @@ public class MenuState extends GameState {
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[7])) {
 				System.out.println("plus1");
+				String coins = String.valueOf(Integer.parseInt(pr.get("coins"))+1);
+				pr.set("coins", coins);
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[8])) {
 				System.out.println("plus2");
+				String patrons = String.valueOf(Integer.parseInt(pr.get("patrons"))+1);
+				pr.set("patrons", patrons);
 			}
 			if(getRect(e.getX(), e.getY()).intersects(opRect[9])) {
-				System.out.println("help");
+				pr.store();
+				System.exit(1);
 			}
 		}
 	}
@@ -170,22 +181,27 @@ public class MenuState extends GameState {
 	public void mouseEntered(MouseEvent e) {
 	
 	}
-
 	@Override
 	public void mouseExited(MouseEvent e) {
 		
 	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
 	}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
+	}
+
 	public Rectangle getRect(int x, int y) {
 		return new Rectangle(x, y, 1, 1);
 	}

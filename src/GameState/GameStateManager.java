@@ -1,5 +1,7 @@
 package GameState;
 
+import Util.Progress;
+
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
@@ -7,30 +9,34 @@ public class GameStateManager {
 
 	private GameState[] gameStates;
 	private int currentState;
+	private Progress pr;
 	
-	public static final int NUMGAMESTATES = 4;
+	public static final int NUMGAMESTATES = 5;
 	public static final int LEVELSTATE = 0;
 	public static final int MENUSTATE = 1;
 	public static final int SELECTLEVEL = 2;
 	public static final int CAREERSTATE = 3;
+	public static final int CONSTRUCTIONSTATE = 4;
 	
 	
 	public GameStateManager() {
 		
 		gameStates = new GameState[NUMGAMESTATES];
+		pr = Progress.getInstance();
 		
-		currentState = MENUSTATE;
+		currentState = Integer.parseInt(pr.get("startState"));
 		loadState(currentState);
-		
 	}
 	
 	private void loadState(int state) {
 		if(state == MENUSTATE)
 			gameStates[state] = new MenuState(this);
-		if(state == LEVELSTATE)
+		else if(state == LEVELSTATE)
 			gameStates[state] = new LevelState(this);
-		if(state == CAREERSTATE)
+		else if(state == CAREERSTATE)
 			gameStates[state] = new CareerState(this);
+		else if(state == CONSTRUCTIONSTATE)
+			gameStates[state] = new ConstructionState(this);
 	}
 	
 	private void unloadState(int state) {
@@ -95,6 +101,18 @@ public class GameStateManager {
 		try {
 			gameStates[currentState].mouseReleased(e); 
 		} catch(Exception g) {} 
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		try {
+			gameStates[currentState].mouseDragged(e);
+		} catch(Exception g) {}
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		try {
+			gameStates[currentState].mouseMoved(e);
+		} catch(Exception g) {}
 	}
 	
 }

@@ -111,7 +111,6 @@ public class CareerState extends GameState {
 	public void keyPressed(int k) {
 		
 	}
-
 	@Override
 	public void keyReleased(int k) {
 		
@@ -137,22 +136,27 @@ public class CareerState extends GameState {
 	public void mouseEntered(MouseEvent e) {
 		
 	}
-
 	@Override
 	public void mouseExited(MouseEvent e) {
 		
 	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
 	}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
+	}
+
 	public Rectangle getRect(int x, int y) {
 		return new Rectangle(x, y, 1, 1);
 	}

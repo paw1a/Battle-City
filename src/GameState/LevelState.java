@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -18,6 +18,7 @@ import Item.Boom;
 import Item.HUD;
 import Main.GamePanel;
 import TileMap.TileMap;
+import Util.Progress;
 import Util.Sprite;
 
 public class LevelState extends GameState implements ActionListener {
@@ -30,6 +31,8 @@ public class LevelState extends GameState implements ActionListener {
 	private Animation spawnAnimation;
 	private Sprite spawnSprite;
 	private boolean toSpawn;
+	private Rectangle backButton;
+	private Rectangle pauseButton;
 
 	private boolean enemyFreeze;
 	private long timeFreeze;
@@ -41,6 +44,7 @@ public class LevelState extends GameState implements ActionListener {
 	public TileMap tileMap;
 	private HUD hud;
 	private Bonus bonus;
+	private Progress pr;
 	
 	public LevelState(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -48,9 +52,10 @@ public class LevelState extends GameState implements ActionListener {
 	}
 	
 	public void init() {
-		levelID = 2;
 		enemies = new ArrayList<>();
-		tileMap = new TileMap("/Levels/Level_"+levelID, 16);
+		pr = Progress.getInstance();
+		levelID = Integer.parseInt(pr.get("levelToPlay"));
+		tileMap = new TileMap("res/Levels/Level_"+levelID, 16);
 		tileMap.loadTiles("/Images/tileset2.png");
 
 		spawnSprite = new Sprite("/Images/image.png");
@@ -63,13 +68,15 @@ public class LevelState extends GameState implements ActionListener {
 
 		enemyQueue = new ArrayList<>();
 		for (int i = 0; i < 20; i++) {
-			/*enemyQueue.add(new Enemy(Integer.parseInt(tileMap.getEnemyTypes()[i]),
-					(i % 3)+1, tileMap, player, i == 3 || i == 10 || i == 17));*/
 			enemyQueue.add(new Enemy(Integer.parseInt(tileMap.getEnemyTypes()[i]),
-					(i % 3)+1, tileMap, player, true));
+					(i % 3)+1, tileMap, player, i == 3 || i == 10 || i == 17));
+			/*enemyQueue.add(new Enemy(Integer.parseInt(tileMap.getEnemyTypes()[i]),
+					(i % 3)+1, tileMap, player, true));*/
 		}
 		id = 0;
 		hud = new HUD(enemies, player, levelID);
+		backButton = new Rectangle(90, 720, 70, 70);
+		pauseButton = new Rectangle(1170, 30, 80, 80);
 	}
 
 	@Override
@@ -267,7 +274,8 @@ public class LevelState extends GameState implements ActionListener {
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+		if(backButton.contains(e.getPoint())) gsm.setState(gsm.MENUSTATE);
+		//if(pauseButton.contains(e.getPoint())) pause();
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -285,6 +293,15 @@ public class LevelState extends GameState implements ActionListener {
 	public void mouseReleased(MouseEvent e) {
 		
 	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(enemies.size() < 4 && id < 20) {
