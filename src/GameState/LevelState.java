@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -32,13 +31,14 @@ public class LevelState extends GameState implements ActionListener {
 	private Sprite spawnSprite;
 	private boolean toSpawn;
 	private Rectangle backButton;
-	private Rectangle pauseButton;
 
 	private boolean enemyFreeze;
 	private long timeFreeze;
+	private long finishTime;
 
 	private int id;
 	private int levelID;
+	private int score;
 
 	private Player player;
 	public TileMap tileMap;
@@ -74,9 +74,16 @@ public class LevelState extends GameState implements ActionListener {
 					(i % 3)+1, tileMap, player, true));*/
 		}
 		id = 0;
+		score = 0;
+		finishTime = 0;
 		hud = new HUD(enemies, player, levelID);
 		backButton = new Rectangle(90, 720, 70, 70);
-		pauseButton = new Rectangle(1170, 30, 80, 80);
+
+		for (int i = 0; i < 4; i++) {
+			pr.set("killed"+(i+1), 0+"");
+		}
+		pr.set("currentScore", 0+"");
+		pr.store();
 	}
 
 	@Override
@@ -148,6 +155,8 @@ public class LevelState extends GameState implements ActionListener {
 							else bonus = new Bonus(player, tileMap);
 						}
 						booms.add(new Boom(enemies.get(i).getX()-30, enemies.get(i).getY()-30, true));
+						pr.set("killed"+enemies.get(i).level, (Integer.parseInt(pr.get("killed"+enemies.get(i).level))+1)+"");
+						score += 100*enemies.get(i).level;
 						enemies.remove(i);
 						if(id < 20) toSpawn = true;
 					}
@@ -172,6 +181,7 @@ public class LevelState extends GameState implements ActionListener {
 		}
 		if(bonus != null)
 			if(player.getRect().intersects(bonus.getRect()) && bonus.isVisible()) {
+				score += 500;
 				bonus.setCatched(true);
 				if(bonus.getType() == 1) player.respawn(10000);
 				else if(bonus.getType() == 2) {
@@ -196,7 +206,15 @@ public class LevelState extends GameState implements ActionListener {
 		hud.update(id);
 		spawnAnimation.update();
 		spawnUpdate();
+		if(finishTime != 0)
+			if(System.currentTimeMillis() - finishTime > 5000) {
+				pr.set("currentScore", score+"");
+				pr.set("xp", (Integer.parseInt(pr.get("xp"))+score)+"");
+				pr.store();
+				gsm.setState(gsm.COUNTSTATE);
+			}
 		if(bonus != null) bonus.update();
+		System.out.println(score);
 	}
 	
 	@Override
@@ -251,9 +269,9 @@ public class LevelState extends GameState implements ActionListener {
 				}
 			}
 		}
-		if(id == 20 && enemies.isEmpty()) {
+		if(id == 20 && enemies.isEmpty() && finishTime==0) {
 			System.out.println("Player win");
-			gsm.setState(GameStateManager.MENUSTATE);
+			finishTime = System.currentTimeMillis();
 		}
 	}
 
@@ -262,9 +280,6 @@ public class LevelState extends GameState implements ActionListener {
 		player.keyPressed(k);
 		if(k == KeyEvent.VK_ESCAPE) {
 			gsm.setState(gsm.MENUSTATE);
-		}
-		if(k == KeyEvent.VK_R) {
-			enemies.add(new Enemy(4, 1, tileMap, player, true));
 		}
 	}
 	
@@ -275,7 +290,6 @@ public class LevelState extends GameState implements ActionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(backButton.contains(e.getPoint())) gsm.setState(gsm.MENUSTATE);
-		//if(pauseButton.contains(e.getPoint())) pause();
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {

@@ -11,13 +11,16 @@ public class GameStateManager {
 	private int currentState;
 	private Progress pr;
 	
-	public static final int NUMGAMESTATES = 5;
+	public static final int NUMGAMESTATES = 7;
 	public static final int LEVELSTATE = 0;
 	public static final int MENUSTATE = 1;
-	public static final int SELECTLEVEL = 2;
+	public static final int SELECTLEVELSTATE = 2;
 	public static final int CAREERSTATE = 3;
 	public static final int CONSTRUCTIONSTATE = 4;
-	
+	public static final int STAGESTATE = 5;
+	public static final int COUNTSTATE = 6;
+
+
 	
 	public GameStateManager() {
 		
@@ -37,6 +40,13 @@ public class GameStateManager {
 			gameStates[state] = new CareerState(this);
 		else if(state == CONSTRUCTIONSTATE)
 			gameStates[state] = new ConstructionState(this);
+		else if(state == SELECTLEVELSTATE)
+			gameStates[state] = new SelectLevelState(this);
+		else if(state == STAGESTATE)
+			gameStates[state] = new StageState(this);
+		else if(state == COUNTSTATE) {
+			gameStates[state] = new CountState(this);
+		}
 	}
 	
 	private void unloadState(int state) {

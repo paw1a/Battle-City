@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
@@ -66,14 +65,15 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void update() {
-		levelLineWidth = (int)((GamePanel.WIDTH / (double)Integer.parseInt(pr.get("levelScore")))
-				*(double) Integer.parseInt(pr.get("gameScore")));
+		levelLineWidth = (int)((GamePanel.WIDTH / (double)Integer.parseInt(pr.get("xpLevelMaxScore")))
+				*(double) Integer.parseInt(pr.get("xp")));
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+
 		g.setColor(Color.WHITE);
 		g.setFont(font.deriveFont(36f));
 		g.drawImage(titleImage, 150*2, 100*2, 450*2, 65*2, null);
@@ -92,12 +92,15 @@ public class MenuState extends GameState {
 		g.setColor(Color.GREEN.darker());
 		g.fillOval(187*2, 260*2, 78*2, 78*2);
 		g.drawImage(settingsImage, 500*2, 320*2, 40*2, 40*2, null);
-		g.fillRect(1, 1, levelLineWidth, 20);
-		g.setColor(Color.GRAY);
-		g.fillRect((GamePanel.WIDTH - 100)*2, 1*2, 99*2, 10*2);
+
+		//draw xp line
+		g.setColor(Color.GRAY.darker());
+		g.fillRect(1, 2, GamePanel.WIDTH-2, 20);
+		g.setColor(Color.GREEN.darker());
+		g.fillRect(1, 2, levelLineWidth, 20);
 		g.setColor(Color.WHITE);
 		g.setFont(font.deriveFont(17f));
-		g.drawString(pr.get("gameScore")+"/" +pr.get("levelScore") +" Level "+pr.get("gameLevel"), 280*2, 9*2);
+		g.drawString(pr.get("xp")+"/" +pr.get("xpLevelMaxScore") +" Level "+pr.get("xpLevel"), 280*2, 9*2);
 
 		//draw options
 		g.setFont(font.deriveFont(40f));
@@ -114,7 +117,7 @@ public class MenuState extends GameState {
 
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.setState(gsm.LEVELSTATE);
+			gsm.setState(gsm.SELECTLEVELSTATE);
 		} else if(currentChoice == 2 || currentChoice == 3) {
 			gsm.setState(gsm.CAREERSTATE);
 		} else if(currentChoice == 4) {

@@ -16,9 +16,7 @@ public class Sprite {
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream(file));
-        } catch (IOException e) {
-            System.out.println("Error in loading " + file);
-        }
+        } catch (IOException e) {e.printStackTrace();}
     }
 
     public void loadImages(int x, int y, int width, int height, int size, int xOffset, int yOffset) {
