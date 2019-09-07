@@ -78,7 +78,7 @@ public class MenuState extends GameState {
 		g.setFont(font.deriveFont(36f));
 		g.drawImage(titleImage, 150*2, 100*2, 450*2, 65*2, null);
 		g.drawImage(money, 155*2, 60*2, 15*2, 16*2, null);
-		g.drawImage(reward, 380, 350, 150, 150, null);
+		//g.drawImage(reward, 380, 350, 150, 150, null);
 		g.drawString(pr.get("coins"), 180*2, 75*2);
 		g.drawImage(plus, 250*2, 60*2, 15*2, 16*2, null);
 		g.drawImage(patron, 320*2, 58*2, 15*2, 20*2, null);
@@ -88,9 +88,9 @@ public class MenuState extends GameState {
 		g.drawString("HI-"+pr.get("highScore"), 285*2, 40*2);
 		g.drawString("EXIT", 580*2, 390*2);
 		g.setColor(Color.GRAY.brighter());
-		g.fillOval(185*2, 258*2, 82*2, 82*2);
+		/*g.fillOval(185*2, 258*2, 82*2, 82*2);
 		g.setColor(Color.GREEN.darker());
-		g.fillOval(187*2, 260*2, 78*2, 78*2);
+		g.fillOval(187*2, 260*2, 78*2, 78*2);*/
 		g.drawImage(settingsImage, 500*2, 320*2, 40*2, 40*2, null);
 
 		//draw xp line
