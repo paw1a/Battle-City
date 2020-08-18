@@ -1,4 +1,4 @@
-package GameState;
+package states;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,16 +9,16 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-import Entity.Animation;
-import Entity.Enemy;
-import Entity.Player;
-import Item.Bonus;
-import Item.Boom;
-import Item.HUD;
-import Main.GamePanel;
-import TileMap.TileMap;
-import Util.Progress;
-import Util.Sprite;
+import entity.Animation;
+import entity.Enemy;
+import entity.Player;
+import items.Bonus;
+import items.Boom;
+import items.HUD;
+import main.GamePanel;
+import tilemaps.TileMap;
+import util.Progress;
+import util.Sprite;
 
 public class LevelState extends GameState implements ActionListener {
 	
@@ -55,7 +55,7 @@ public class LevelState extends GameState implements ActionListener {
 		enemies = new ArrayList<>();
 		pr = Progress.getInstance();
 		levelID = Integer.parseInt(pr.get("levelToPlay"));
-		tileMap = new TileMap("res/Levels/Level_"+levelID, 16);
+		tileMap = new TileMap("/Levels/Level_"+levelID, 16);
 		tileMap.loadTiles("/Images/tileset2.png");
 
 		spawnSprite = new Sprite("/Images/image.png");

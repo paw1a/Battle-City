@@ -1,4 +1,4 @@
-package GameState;
+package states;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,12 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import Main.GamePanel;
+import main.GamePanel;
 
 public class CareerState extends GameState {
 

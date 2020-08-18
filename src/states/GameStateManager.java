@@ -1,6 +1,6 @@
-package GameState;
+package states;
 
-import Util.Progress;
+import util.Progress;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;

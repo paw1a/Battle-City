@@ -1,20 +1,14 @@
-package TileMap;
+package tilemaps;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import javax.imageio.ImageIO;
 
-import Entity.Animation;
-import Entity.Player;
+import entity.Animation;
 
 public class TileMap {
 
@@ -46,7 +40,7 @@ public class TileMap {
 
 		String delimiters = "";
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(s)));
+			BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(s)));
 
 			enemyTypes = new String[20];
 			enemyTypes = br.readLine().split(delimiters);

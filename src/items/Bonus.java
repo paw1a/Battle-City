@@ -1,9 +1,9 @@
-package Item;
+package items;
 
-import Entity.Animation;
-import Entity.Player;
-import TileMap.TileMap;
-import Util.Sprite;
+import entity.Animation;
+import entity.Player;
+import tilemaps.TileMap;
+import util.Sprite;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

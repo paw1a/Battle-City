@@ -1,7 +1,7 @@
-package Item;
+package items;
 
-import Entity.Animation;
-import Util.Sprite;
+import entity.Animation;
+import util.Sprite;
 
 import java.awt.*;
 

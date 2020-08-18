@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,9 +8,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import Main.GamePanel;
-import TileMap.Tile;
-import TileMap.TileMap;
+import main.GamePanel;
+import tilemaps.TileMap;
 
 public class Bullet {
 

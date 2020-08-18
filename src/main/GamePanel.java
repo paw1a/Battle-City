@@ -1,6 +1,6 @@
-package Main;
+package main;
 
-import GameState.GameStateManager;
+import states.GameStateManager;
 
 import javax.swing.*;
 import java.awt.*;

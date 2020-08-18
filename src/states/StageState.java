@@ -1,7 +1,7 @@
-package GameState;
+package states;
 
-import Main.GamePanel;
-import Util.Progress;
+import main.GamePanel;
+import util.Progress;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

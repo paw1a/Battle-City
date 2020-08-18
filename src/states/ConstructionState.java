@@ -1,7 +1,7 @@
-package GameState;
+package states;
 
-import Main.GamePanel;
-import Util.Progress;
+import main.GamePanel;
+import util.Progress;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

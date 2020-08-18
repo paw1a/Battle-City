@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -10,9 +10,9 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-import Main.GamePanel;
-import TileMap.TileMap;
-import Util.Sprite;
+import main.GamePanel;
+import tilemaps.TileMap;
+import util.Sprite;
 
 public class Enemy extends Entity implements ActionListener {
 

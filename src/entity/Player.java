@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,9 +7,9 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import Main.GamePanel;
-import TileMap.TileMap;
-import Util.Sprite;
+import main.GamePanel;
+import tilemaps.TileMap;
+import util.Sprite;
 
 public class Player extends Entity {
 	

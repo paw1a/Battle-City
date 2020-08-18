@@ -1,8 +1,8 @@
-package Item;
+package items;
 
-import Entity.Enemy;
-import Entity.Player;
-import Util.Progress;
+import entity.Enemy;
+import entity.Player;
+import util.Progress;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

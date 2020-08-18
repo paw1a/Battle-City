@@ -1,7 +1,7 @@
-package Entity;
+package entity;
 
-import TileMap.TileMap;
-import Util.Sprite;
+import tilemaps.TileMap;
+import util.Sprite;
 
 public class Entity {
 

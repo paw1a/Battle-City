@@ -1,4 +1,4 @@
-package GameState;
+package states;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -7,8 +7,8 @@ import java.io.*;
 
 import javax.imageio.ImageIO;
 
-import Main.GamePanel;
-import Util.Progress;
+import main.GamePanel;
+import util.Progress;
 
 public class MenuState extends GameState {
 
